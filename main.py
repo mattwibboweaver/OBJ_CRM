@@ -1,14 +1,6 @@
 import streamlit as st
-from libraries.db import SQLiteConnection
-
-
-def get_db_connection():
-    """
-    Get a database connection and store in the session state
-    """
-    db_conn = SQLiteConnection()
-    st.session_state['conn'] = db_conn
-    st.session_state['cur'] = db_conn.cursor
+import libraries.helper as hp
+from libraries.users import AppUser
 
 
 def show_login_screen():
@@ -34,14 +26,23 @@ def show_login_screen():
             else:
                 st.error('Error!')
     with col2:
-        if st.button('Register', key='register'):
-            ...
+        if st.button('Register', key='register', disabled=st.session_state.get('login_btn_enabled')):
+
+            new_user = users.create_user(username, password)
+            if new_user:
+                st.session_state['db'].conn.commit()
+                st.session_state['logged_in_user'] = username
+                st.experimental_rerun()
+            else:
+                st.error('Error!')
 
 
-# The login page
-if st.session_state.get('conn', None) is None:
+if st.session_state.get('db', None) is None:
     # Get a database connection if we don't have one
-    get_db_connection()
+    db = hp.get_db_connection()
+    st.session_state['db'] = db
+
+users = AppUser(st.session_state.get('db', None))
 
 if st.session_state.get('logged_in_user', None) is None:
     # Show the login screen if we're not logged in
