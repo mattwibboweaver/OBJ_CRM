@@ -1,4 +1,5 @@
 import libraries.helper as hp
+import libraries.db
 
 
 class TestMain:
@@ -21,6 +22,11 @@ class TestMain:
         assert hp.username_is_valid('email@somewhere.com') is True
         assert hp.username_is_valid('email@somewhere.co.uk') is True
         assert hp.username_is_valid('email_123@somewhere.com') is True
+
+    def test_username_invalid(self):
+        assert hp.username_is_valid('email@somewhere') is False
+        assert hp.username_is_valid('emailsomewhere.co.uk') is False
+        assert hp.username_is_valid('email_123@somewhere-com') is False
 
 
 

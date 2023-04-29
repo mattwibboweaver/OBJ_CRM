@@ -48,4 +48,5 @@ if st.session_state.get('logged_in_user', None) is None:
     # Show the login screen if we're not logged in
     show_login_screen()
 else:
+    # TODO The main application logic goes here!
     st.write('Logged in as', st.session_state.get('logged_in_user', None))

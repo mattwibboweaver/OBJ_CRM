@@ -24,7 +24,6 @@ def login_is_valid(username, password, pmax, pmin):
     return user and pwd
 
 
-
 def password_is_valid(password, pmax, pmin):
     """
     Return True if the password string is valid, False otherwise.
